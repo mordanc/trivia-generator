@@ -2,13 +2,7 @@
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
+.Content {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -19,15 +13,57 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.trivia-holder {
+  background-color: rgba(0,0,0, .4);
+
+  padding-left: 3vw;
+  padding-right: 3vw;
+  padding-top: 3vh;
+  padding-bottom: 3vh;
+
+  border-radius: 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.trivia-text {
+  text-align: start;
+}
+
+.button-holder {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10vh;
+}
+
+.type-text {
+  color: #848f8a;
+}
+
+.question-text {
+  color: rgba(255, 247, 200);
+}
+
+.answer-text {
+  padding-top: 2vh;
+  color: #00ff00;
+}
+
+ul {
+  padding-left: 0;
+  list-style-type: none;
+}
+
+li {
+  padding-bottom: 3vh;
+}
+
+button {
+  background-color: #434b47;
+  color: #fff;
+  font-size: calc(10px + 2vmin);
+  padding: 12px;
+  border-radius: 14px;
+}
+
+button:hover {
+  background-color: #282c34;
 }
