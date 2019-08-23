@@ -28,21 +28,21 @@ class Trivia extends React.Component {
         return (
             <div className='trivia-holder'>
                 <div className='trivia-text'>
-                <div className="row">
-                    <div className="type-text">{this.state.type === 'boolean' ? 'True or False' : 'Multiple Choice'}</div>
-                    <Switch onChange={this.handleChange.bind(this)} checked={this.state.show_choices}/>
-                </div>
+                    <div className="row">
+                        <div className="type-text">{this.state.type === 'boolean' ? 'True or False' : 'Multiple Choice'}</div>
+                        <Switch onChange={this.handleChange.bind(this)} checked={this.state.show_choices} />
+                    </div>
                     <div className='category-text'>{this.state.category}</div>
 
                     <div className='question-text'>{this.state.question}</div>
 
                     {this.state.reveal === false ?
                         (this.state.show_choices ?
-                        <ul className='choices'>
-                            {this.state.choices.map(function (choice) {
-                                return <li>{choice}</li>;
-                            })}
-                        </ul>: null)
+                            <ul className='choices'>
+                                {this.state.choices.map(function (choice) {
+                                    return <li>{choice}</li>;
+                                })}
+                            </ul> : null)
                         :
                         <div className='answer-text'>{this.state.answer}</div>}
                 </div>
@@ -60,12 +60,30 @@ class Trivia extends React.Component {
     }
 
     componentDidMount() {
-        
-        this.fetchQuestion();
+        // Fetch a new token to ensure no repeats for the session
+        fetch("https://opentdb.com/api_token.php?command=request").then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        session_token: result.token
+                    });
+
+                    // Generate a new trivia question
+                    this.fetchQuestion();
+                },
+                (error) => {
+                    this.setState({
+                        loading: false,
+                        question: error.message
+                    });
+                }
+            )
+
     }
 
     fetchQuestion() {
-        var url = "https://opentdb.com/api.php?amount=1";
+        var url = "https://opentdb.com/api.php?amount=1&token=" + this.state.session_token;
+
 
         fetch(url)
             .then(res => res.json())
@@ -90,7 +108,7 @@ class Trivia extends React.Component {
                         // Put incorrect and correct choices into array
                         var choices = result.results[0].incorrect_answers;
                         choices.push(result.results[0].correct_answer);
-                        
+
                         // Decode all choices
                         for (var i = choices.length - 1; i > 0; i--) {
                             choices[i] = he.decode(choices[i]);
