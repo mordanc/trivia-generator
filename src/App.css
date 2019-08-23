@@ -28,6 +28,12 @@
   text-align: start;
 }
 
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .button-holder {
   display: flex;
   justify-content: space-between;
@@ -36,6 +42,12 @@
 
 .type-text {
   color: #848f8a;
+}
+
+.category-text {
+  color: #76807b;
+  font-size: calc(10px + 1.1vmin);
+  font-style: italic;
 }
 
 .question-text {

@@ -1,5 +1,6 @@
 import React from 'react';
 import he from 'he';
+import Switch from "react-switch";
 
 class Trivia extends React.Component {
     constructor(props) {
@@ -9,11 +10,16 @@ class Trivia extends React.Component {
             type: 'Trivia Type',
             question: 'Well that wasn\'t supposed to happen...',
             choices: [],
-            answer: ':(',
-            reveal: false
+            answer: '',
+            category: '',
+            reveal: false,
+            show_choices: false,
+            next_disabled: true
         };
     }
-
+    handleChange(checked) {
+        this.setState({ show_choices: checked });
+    }
     render() {
         if (this.state.loading) {
             return <div>Loading...</div>
@@ -22,56 +28,73 @@ class Trivia extends React.Component {
         return (
             <div className='trivia-holder'>
                 <div className='trivia-text'>
+                <div className="row">
                     <div className="type-text">{this.state.type === 'boolean' ? 'True or False' : 'Multiple Choice'}</div>
+                    <Switch onChange={this.handleChange.bind(this)} checked={this.state.show_choices}/>
+                </div>
+                    <div className='category-text'>{this.state.category}</div>
 
                     <div className='question-text'>{this.state.question}</div>
 
                     {this.state.reveal === false ?
+                        (this.state.show_choices ?
                         <ul className='choices'>
                             {this.state.choices.map(function (choice) {
                                 return <li>{choice}</li>;
                             })}
-                        </ul>
+                        </ul>: null)
                         :
                         <div className='answer-text'>{this.state.answer}</div>}
                 </div>
 
                 <div className='button-holder'>
                     {this.state.reveal === false ?
-                        <button onClick={() => this.setState({ reveal: true })}>Show Answer</button>
+                        <button onClick={() => this.setState({ reveal: true, next_disabled: false })}>Show Answer</button>
                         :
                         <button onClick={() => this.setState({ reveal: false })}>Hide Answer</button>
                     }
-                    <button onClick={() => this.fetchQuestion()}>New Question</button>
+                    <button hidden={this.state.next_disabled} onClick={() => this.fetchQuestion()}>New Question</button>
                 </div>
             </div>
         );
     }
 
     componentDidMount() {
+        
         this.fetchQuestion();
     }
 
     fetchQuestion() {
-        fetch("https://opentdb.com/api.php?amount=1")
+        var url = "https://opentdb.com/api.php?amount=1";
+
+        fetch(url)
             .then(res => res.json())
             .then(
                 (result) => {
                     this.setState({
                         reveal: false,
                         loading: false,
+                        next_disabled: true,
+                        show_choices: false,
                         type: result.results[0].type,
                         question: he.decode(result.results[0].question),
-                        answer: result.results[0].correct_answer
+                        answer: he.decode(result.results[0].correct_answer),
+                        category: result.results[0].category
                     });
 
                     if (this.state.type === 'boolean') {
                         this.setState({
                             choices: ['True', 'False']
                         });
-                    } else {
+                    } else { //For multiple choice
+                        // Put incorrect and correct choices into array
                         var choices = result.results[0].incorrect_answers;
                         choices.push(result.results[0].correct_answer);
+                        
+                        // Decode all choices
+                        for (var i = choices.length - 1; i > 0; i--) {
+                            choices[i] = he.decode(choices[i]);
+                        }
 
                         this.setState({
                             choices: this.shuffle(choices)
@@ -87,6 +110,7 @@ class Trivia extends React.Component {
             )
     }
 
+    // Scramble the choices so correct position isn't predictable
     shuffle(arr) {
         var i,
             j,
