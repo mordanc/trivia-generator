@@ -1,6 +1,7 @@
 import React from 'react';
 import he from 'he';
 import Switch from "react-switch";
+import Select from 'react-select';
 
 class Trivia extends React.Component {
     constructor(props) {
@@ -14,19 +15,44 @@ class Trivia extends React.Component {
             category: '',
             reveal: false,
             show_choices: false,
-            next_disabled: true
+            next_disabled: true,
+            settings_open: false,
+            categories: [],
+            selected_categories: [],
+            session_token: ''
         };
     }
-    handleChange(checked) {
+
+    handleChange(checked) {//change of switch for choices
         this.setState({ show_choices: checked });
     }
+
+    categoryChange(selected_categories) {
+        this.setState({selected_categories});
+    }
+    
     render() {
         if (this.state.loading) {
-            return <div>Loading...</div>
+            return <div><img src={require('./images/Wedges-3s-200px.svg')} alt='Loading'/></div>
         }
 
         return (
             <div className='trivia-holder'>
+                {this.state.settings_open ?
+                    <div style={{padding: '2vh'}}>
+                        <span onClick={() => this.setState({ settings_open: false })}> [Close] </span>
+                        <Select isMulti options={this.state.categories}
+                        onChange={this.categoryChange.bind(this)}
+                        value={this.state.selected_categories}
+                        // onChange={(category)=>this.setState({category})} value={this.state.categories[0]} placeholder="Select an option"
+
+                        />
+                    </div>
+                    :
+                    <div>
+                        <span onClick={() => this.setState({ settings_open: true })}>...</span>
+                    </div>
+                }
                 <div className='trivia-text'>
                     <div className="row">
                         <div className="type-text">{this.state.type === 'boolean' ? 'True or False' : 'Multiple Choice'}</div>
@@ -60,12 +86,48 @@ class Trivia extends React.Component {
     }
 
     componentDidMount() {
+        this.fetchToken();//This fetches token, then calls fetchCategories, then fetchQuestion
+    }
+
+    fetchToken() {
         // Fetch a new token to ensure no repeats for the session
         fetch("https://opentdb.com/api_token.php?command=request").then(res => res.json())
             .then(
                 (result) => {
                     this.setState({
                         session_token: result.token
+                    });
+
+                    this.fetchCategories();
+                },
+                (error) => {
+                    this.setState({
+                        loading: false,
+                        question: error.message
+                    });
+                }
+            )
+    }
+
+    fetchCategories() {
+        fetch("https://opentdb.com/api_category.php").then(res => res.json())
+            .then(
+                (result) => {
+
+                    for (var i = result.trivia_categories.length - 1; i > 0; i--) {// convert json keys from api json to what the dropdown uses
+                        
+                        var obj = result.trivia_categories[i];
+                        obj.value = obj.id;
+                        delete obj.id;
+
+                        obj.label = obj.name;
+                        delete obj.name;
+                        result.trivia_categories[i] = obj;
+                    }
+
+                    this.setState({
+                        categories: result.trivia_categories,
+                        selected_categories: result.trivia_categories
                     });
 
                     // Generate a new trivia question
@@ -78,17 +140,27 @@ class Trivia extends React.Component {
                     });
                 }
             )
-
     }
 
     fetchQuestion() {
-        var url = "https://opentdb.com/api.php?amount=1&token=" + this.state.session_token;
+        this.setState({ loading: true, settings_open: false });
+        var url = "https://opentdb.com/api.php?amount=1";
+
+        if(this.state.session_token !== '') {
+            url += "&token="+this.state.session_token;
+        }
+        if(this.state.selected_categories.length < this.state.categories.length && this.state.selected_categories.length > 0) {
+            
+            url += "&category="+this.pickCategory();
+            alert(url);
+        }
 
 
         fetch(url)
             .then(res => res.json())
             .then(
                 (result) => {
+                    console.log(result.results[0]);
                     this.setState({
                         reveal: false,
                         loading: false,
@@ -126,6 +198,11 @@ class Trivia extends React.Component {
                     });
                 }
             )
+    }
+
+    pickCategory() {
+        var index = Math.floor(Math.random() * (this.state.selected_categories.length));
+        return this.state.selected_categories[index].value;
     }
 
     // Scramble the choices so correct position isn't predictable

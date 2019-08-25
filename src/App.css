@@ -3,25 +3,112 @@
 }
 
 .Content {
-  background-color: #282c34;
+  background: #59c173; /* fallback for old browsers */
+  background: #23074d; /* fallback for old browsers */
+  /* background-color: hsl(106, 91%, 42%); */
+
+  background-image: repeating-linear-gradient(
+      transparent,
+      transparent 50px,
+      rgba(0, 0, 0, 0.4) 50px,
+      rgba(0, 0, 0, 0.4) 53px,
+      transparent 53px,
+      transparent 63px,
+      rgba(0, 0, 0, 0.4) 63px,
+      rgba(0, 0, 0, 0.4) 66px,
+      transparent 66px,
+      transparent 116px,
+      rgba(0, 0, 0, 0.5) 116px,
+      rgba(0, 0, 0, 0.5) 166px,
+      rgba(255, 255, 255, 0.2) 166px,
+      rgba(255, 255, 255, 0.2) 169px,
+      rgba(0, 0, 0, 0.5) 169px,
+      rgba(0, 0, 0, 0.5) 179px,
+      rgba(255, 255, 255, 0.2) 179px,
+      rgba(255, 255, 255, 0.2) 182px,
+      rgba(0, 0, 0, 0.5) 182px,
+      rgba(0, 0, 0, 0.5) 232px,
+      transparent 232px
+    ),
+    repeating-linear-gradient(
+      270deg,
+      transparent,
+      transparent 50px,
+      rgba(0, 0, 0, 0.4) 50px,
+      rgba(0, 0, 0, 0.4) 53px,
+      transparent 53px,
+      transparent 63px,
+      rgba(0, 0, 0, 0.4) 63px,
+      rgba(0, 0, 0, 0.4) 66px,
+      transparent 66px,
+      transparent 116px,
+      rgba(0, 0, 0, 0.5) 116px,
+      rgba(0, 0, 0, 0.5) 166px,
+      rgba(255, 255, 255, 0.2) 166px,
+      rgba(255, 255, 255, 0.2) 169px,
+      rgba(0, 0, 0, 0.5) 169px,
+      rgba(0, 0, 0, 0.5) 179px,
+      rgba(255, 255, 255, 0.2) 179px,
+      rgba(255, 255, 255, 0.2) 182px,
+      rgba(0, 0, 0, 0.5) 182px,
+      rgba(0, 0, 0, 0.5) 232px,
+      transparent 232px
+    ),
+    repeating-linear-gradient(
+      125deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.2) 2px,
+      rgba(0, 0, 0, 0.2) 3px,
+      transparent 3px,
+      transparent 5px,
+      rgba(0, 0, 0, 0.2) 5px
+    ),
+    linear-gradient(
+      to top,
+      #4fb576 0%,
+      #44c489 30%,
+      #28a9ae 46%,
+      #28a2b7 59%,
+      #4c7788 71%,
+      #6c4f63 86%,
+      #432c39 100%
+    );
+
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2.7vmin);
-  color: white;
+  color: gray;
 }
 
 .trivia-holder {
-  background-color: rgba(0,0,0, .4);
+  background-color: rgba(0, 0, 0, 0.9);
+  background-color: #fff;
+  background-image: linear-gradient(
+      90deg,
+      /* transparent 79px,
+      #abced4 79px,
+      #abced4 81px,
+      transparent 81px */
+      transparent 7%,
+      #abced4 7%,
+      #abced4 calc(7% + 2px),
+      transparent calc(7% + 2px)
+    ),
+    linear-gradient(#eee 0.1em, transparent 0.1em);
+  background-size: 100% 1.2em;
 
-  padding-left: 3vw;
+  padding-left: 8.5%;
   padding-right: 3vw;
-  padding-top: 3vh;
-  padding-bottom: 3vh;
+  padding-top: 0;
+  padding-bottom: .8em;
 
   border-radius: 10px;
+
+  max-width: 100%;
 }
 
 .trivia-text {
@@ -37,7 +124,7 @@
 .button-holder {
   display: flex;
   justify-content: space-between;
-  padding-top: 10vh;
+  padding-top: 1em;
 }
 
 .type-text {
@@ -48,16 +135,17 @@
   color: #76807b;
   font-size: calc(10px + 1.1vmin);
   font-style: italic;
-  padding-bottom: 1.5vh;
+  padding-bottom: .5em;
 }
 
 .question-text {
-  color: rgba(255, 247, 200);
+  color: black;
 }
 
 .answer-text {
-  padding-top: 2vh;
-  color: #00ff00;
+  padding-top: 1em;
+  font-weight: 500;
+  color: #00ad00;
 }
 
 ul {
@@ -71,6 +159,7 @@ li {
 
 button {
   background-color: #434b47;
+  outline: none;
   color: #fff;
   font-size: calc(10px + 2vmin);
   padding: 12px;
