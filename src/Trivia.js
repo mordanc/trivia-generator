@@ -150,9 +150,7 @@ class Trivia extends React.Component {
             url += "&token="+this.state.session_token;
         }
         if(this.state.selected_categories.length < this.state.categories.length && this.state.selected_categories.length > 0) {
-            
             url += "&category="+this.pickCategory();
-            alert(url);
         }
 
 
