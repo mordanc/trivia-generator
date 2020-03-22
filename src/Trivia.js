@@ -2,6 +2,7 @@ import React from 'react';
 import he from 'he';
 import Switch from "react-switch";
 import Select from 'react-select';
+import Choice from './Choice';
 
 class Trivia extends React.Component {
     constructor(props) {
@@ -9,12 +10,14 @@ class Trivia extends React.Component {
         this.state = {
             loading: true,
             type: 'Trivia Type',
-            question: 'Well that wasn\'t supposed to happen...',
+            difficulty: '',
+            question: 'Nice job, you broke it.',
             choices: [],
             answer: '',
             category: '',
             reveal: false,
             show_choices: false,
+            selected_choice: '',
             next_disabled: true,
             settings_open: false,
             categories: [],
@@ -23,12 +26,18 @@ class Trivia extends React.Component {
         };
     }
 
-    handleChange(checked) {//change of switch for choices
-        this.setState({ show_choices: checked });
+    toggleChoices(checked) {//change of switch for choices
+        this.setState({ show_choices: checked, selected_choice: '', reveal: false});
     }
 
     categoryChange(selected_categories) {
         this.setState({selected_categories});
+    }
+
+    setSelected(selected_choice) {
+        if(this.state.selected_choice === '' && !this.state.reveal && this.state.show_choices) {
+            this.setState({selected_choice, show_choices: true, reveal: true, next_disabled: false});
+        }
     }
     
     render() {
@@ -56,28 +65,34 @@ class Trivia extends React.Component {
                 <div className='trivia-text'>
                     <div className="row">
                         <div className="type-text">{this.state.type === 'boolean' ? 'True or False' : 'Multiple Choice'}</div>
-                        <Switch onChange={this.handleChange.bind(this)} checked={this.state.show_choices} />
+                        <Switch onChange={this.toggleChoices.bind(this)} checked={this.state.show_choices} />
                     </div>
-                    <div className='category-text'>{this.state.category}</div>
+                    <div className='category-text'>{this.state.category} ({this.state.difficulty})</div>
 
                     <div className='question-text'>{this.state.question}</div>
-
-                    {this.state.reveal === false ?
-                        (this.state.show_choices ?
                             <ul className='choices'>
-                                {this.state.choices.map(function (choice) {
-                                    return <li>{choice}</li>;
+                                {this.state.choices.map((choice, key) => {
+                                    return (
+                                        <li key={key}>
+                                            <Choice 
+                                            text={choice} 
+                                            show={this.state.show_choices}
+                                            correct={this.state.answer === choice}
+                                            reveal={this.state.reveal}
+                                            selected={this.state.selected_choice === choice}
+                                            setSelected={(e)=> this.setSelected(e)}
+                                            />
+                                        </li>
+                                    );
                                 })}
-                            </ul> : null)
-                        :
-                        <div className='answer-text'>{this.state.answer}</div>}
+                            </ul> 
                 </div>
 
                 <div className='button-holder'>
                     {this.state.reveal === false ?
-                        <button onClick={() => this.setState({ reveal: true, next_disabled: false })}>Show Answer</button>
+                        <button onClick={() => this.setState({ reveal: true, next_disabled: false, show_choices: true })}>Show Answer</button>
                         :
-                        <button onClick={() => this.setState({ reveal: false })}>Hide Answer</button>
+                        <button onClick={() => this.setState({ reveal: false, selected_choice: '' })}>Hide Answer</button>
                     }
                     <button hidden={this.state.next_disabled} onClick={() => this.fetchQuestion()}>New Question</button>
                 </div>
@@ -164,7 +179,9 @@ class Trivia extends React.Component {
                         loading: false,
                         next_disabled: true,
                         show_choices: false,
+                        selected_choice: '',
                         type: result.results[0].type,
+                        difficulty: result.results[0].difficulty,
                         question: he.decode(result.results[0].question),
                         answer: he.decode(result.results[0].correct_answer),
                         category: result.results[0].category

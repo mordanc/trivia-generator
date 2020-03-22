@@ -106,9 +106,9 @@
   padding-top: 0;
   padding-bottom: .8em;
 
-  border-radius: 10px;
+  border-radius: 5px;
 
-  max-width: 100%;
+  width: 75%;
 }
 
 .trivia-text {
@@ -142,10 +142,29 @@
   color: black;
 }
 
-.answer-text {
-  padding-top: 1em;
+.choice {
+  cursor: pointer;
+}
+
+.answer-text:hover {
+  background-color: rgba(1, 183, 255, 0.2);
+}
+
+.corrected-answer-text {
   font-weight: 500;
   color: #00ad00;
+}
+
+.correct-answer-text {
+  font-weight: 500;
+  color: #00ad00;
+  background-color: #1fff0133;
+}
+
+.wrong-answer-text {
+  font-weight: 500;
+  color: #e62807;
+  background-color: #e6280752;
 }
 
 ul {
