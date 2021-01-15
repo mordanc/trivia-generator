@@ -30,31 +30,12 @@ import {
   TagLabel,
 } from "@chakra-ui/react";
 import { PhoneIcon, AddIcon, WarningIcon } from "@chakra-ui/icons";
+import { io } from "socket.io-client";
+
+import { Bets } from "./components/Bets/Bets";
 
 import "react-toastify/dist/ReactToastify.css";
-
-const Bets = ({ updateBetAmount }) => {
-  const [betAmount, setBetAmount] = useState(0);
-  return (
-    <HStack>
-      {/* steppers have a weird overlap without this padding value */}
-      <NumberInput
-        value={betAmount}
-        onChange={(value) => setBetAmount(value)}
-        h="2.5rem"
-      >
-        <NumberInputField />
-        <NumberInputStepper>
-          <NumberIncrementStepper />
-          <NumberDecrementStepper />
-        </NumberInputStepper>
-      </NumberInput>
-      <Button onClick={() => updateBetAmount(Number(betAmount))}>
-        Place Bets
-      </Button>
-    </HStack>
-  );
-};
+import RoomForm from "./components/Rooms/RoomForm";
 
 const getDifficultyColor = (difficulty) => {
   switch (difficulty) {
@@ -72,6 +53,8 @@ const getDifficultyColor = (difficulty) => {
 class Trivia extends React.Component {
   constructor(props) {
     super(props);
+    const socket = io("http://localhost:5000");
+
     this.state = {
       loading: true,
       type: "Trivia Type",
@@ -89,6 +72,7 @@ class Trivia extends React.Component {
       selected_categories: [],
       session_token: "",
       betAmount: 0,
+      socket,
     };
   }
 
@@ -154,6 +138,13 @@ class Trivia extends React.Component {
 
   componentDidMount() {
     this.fetchToken(); //This fetches token, then calls fetchCategories, then fetchQuestion
+    // client-side
+    const { socket } = this.state;
+    socket.on("connect", () => {
+      console.log("socket", socket.id); // x8WIv7-mJelg7on_ALbx
+      socket.emit("adduser", "mordan");
+      socket.on("updatechat", (sender, msg) => console.log("message:", msg));
+    });
   }
 
   fetchToken() {
@@ -291,6 +282,18 @@ class Trivia extends React.Component {
     return arr;
   }
 
+  showAnswer = () => {
+    this.setState({
+      reveal: true,
+      next_disabled: false,
+      show_choices: true,
+    });
+  };
+
+  hideAnswer = () => {
+    this.setState({ reveal: false, selected_choice: "" });
+  };
+
   render() {
     if (this.state.loading) {
       return <Spinner />;
@@ -350,45 +353,38 @@ class Trivia extends React.Component {
               </ul>
             </div>
 
-            <Flex justify="space-between">
-              <HStack>
-                {!this.state.reveal ? (
-                  this.state.show_choices ? (
-                    <span></span>
-                  ) : (
-                    <Button
-                      onClick={() =>
-                        this.setState({
-                          reveal: true,
-                          next_disabled: false,
-                          show_choices: true,
-                        })
-                      }
-                    >
-                      Show Answer
-                    </Button>
-                  )
-                ) : (
-                  <Button
-                    onClick={() =>
-                      this.setState({ reveal: false, selected_choice: "" })
-                    }
-                  >
-                    Hide Answer
-                  </Button>
-                )}
-                <Button
-                  hidden={this.state.next_disabled}
-                  onClick={() => this.fetchQuestion()}
-                >
-                  New Question
-                </Button>
-              </HStack>
+            <Divider mb="1rem" />
+
+            <Stack direction={["row", "row"]}>
               <Bets
                 betAmount={this.state.betAmount}
                 updateBetAmount={this.updateBetAmount}
               />
-            </Flex>
+
+              <RoomForm socket={this.state.socket} />
+
+              <HStack>
+                {this.state.reveal ? (
+                  <Button
+                    disabled={!this.state.reveal}
+                    onClick={this.hideAnswer}
+                  >
+                    Hide Answer
+                  </Button>
+                ) : (
+                  <Button
+                    disabled={this.state.reveal}
+                    onClick={this.showAnswer}
+                  >
+                    Show Answer
+                  </Button>
+                )}
+
+                <Button onClick={() => this.fetchQuestion()}>
+                  New Question
+                </Button>
+              </HStack>
+            </Stack>
           </div>
         ) : (
           <div style={{ padding: "2vh" }}>

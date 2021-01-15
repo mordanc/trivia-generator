@@ -4,10 +4,11 @@
 
 .Content {
   background-color: #242525;
+  /* background-color: #23282A; */
   /* background-image: url("https://www.braedin.com/Thpace/overlay.png"); */
-  background: linear-gradient(90deg, #161122 21px, transparent 1%) center,
+  /* background: linear-gradient(90deg, #161122 21px, transparent 1%) center,
     linear-gradient(#161122 21px, transparent 1%) center, #a799cc;
-  background-size: 22px 22px;
+  background-size: 22px 22px; */
 
   min-height: 100vh;
   display: flex;
@@ -19,9 +20,13 @@
 }
 
 .trivia-holder {
+  /* background-color: #23282a; */
+
   background-color: #242525;
   padding: 1rem;
   border-radius: 5px;
+
+  box-shadow: rgba(255, 255, 255, 0.5) 0px 0px 5px 0px;
 
   /* background-color: #242525;
 
