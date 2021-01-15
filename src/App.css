@@ -5,74 +5,6 @@
 .Content {
   background-color: #242525;
 
-  /* background-image: repeating-linear-gradient(
-      transparent,
-      transparent 50px,
-      rgba(0, 0, 0, 0.4) 50px,
-      rgba(0, 0, 0, 0.4) 53px,
-      transparent 53px,
-      transparent 63px,
-      rgba(0, 0, 0, 0.4) 63px,
-      rgba(0, 0, 0, 0.4) 66px,
-      transparent 66px,
-      transparent 116px,
-      rgba(0, 0, 0, 0.5) 116px,
-      rgba(0, 0, 0, 0.5) 166px,
-      rgba(255, 255, 255, 0.2) 166px,
-      rgba(255, 255, 255, 0.2) 169px,
-      rgba(0, 0, 0, 0.5) 169px,
-      rgba(0, 0, 0, 0.5) 179px,
-      rgba(255, 255, 255, 0.2) 179px,
-      rgba(255, 255, 255, 0.2) 182px,
-      rgba(0, 0, 0, 0.5) 182px,
-      rgba(0, 0, 0, 0.5) 232px,
-      transparent 232px
-    ),
-    repeating-linear-gradient(
-      270deg,
-      transparent,
-      transparent 50px,
-      rgba(0, 0, 0, 0.4) 50px,
-      rgba(0, 0, 0, 0.4) 53px,
-      transparent 53px,
-      transparent 63px,
-      rgba(0, 0, 0, 0.4) 63px,
-      rgba(0, 0, 0, 0.4) 66px,
-      transparent 66px,
-      transparent 116px,
-      rgba(0, 0, 0, 0.5) 116px,
-      rgba(0, 0, 0, 0.5) 166px,
-      rgba(255, 255, 255, 0.2) 166px,
-      rgba(255, 255, 255, 0.2) 169px,
-      rgba(0, 0, 0, 0.5) 169px,
-      rgba(0, 0, 0, 0.5) 179px,
-      rgba(255, 255, 255, 0.2) 179px,
-      rgba(255, 255, 255, 0.2) 182px,
-      rgba(0, 0, 0, 0.5) 182px,
-      rgba(0, 0, 0, 0.5) 232px,
-      transparent 232px
-    ),
-    repeating-linear-gradient(
-      125deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.2) 2px,
-      rgba(0, 0, 0, 0.2) 3px,
-      transparent 3px,
-      transparent 5px,
-      rgba(0, 0, 0, 0.2) 5px
-    ),
-    linear-gradient(
-      to top,
-      #4fb576 0%,
-      #44c489 30%,
-      #28a9ae 46%,
-      #28a2b7 59%,
-      #4c7788 71%,
-      #6c4f63 86%,
-      #432c39 100%
-    ); */
-
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -82,19 +14,7 @@
   color: gray;
 }
 
-.trivia-holder {
-  /* background-color: rgba(0, 0, 0, 0.9);
-  background-color: #fff;
-  background-image: linear-gradient(
-      90deg,
-      transparent 7%,
-      #abced4 7%,
-      #abced4 calc(7% + 2px),
-      transparent calc(7% + 2px)
-    ),
-    linear-gradient(#eee 0.1em, transparent 0.1em);
-  background-size: 100% 1.2em; */
-
+/* .trivia-holder {
   background-color: #242525;
 
   padding-left: 8.5%;
@@ -105,7 +25,7 @@
   border-radius: 5px;
 
   width: 75%;
-}
+} */
 
 .trivia-text {
   text-align: start;
@@ -155,15 +75,10 @@
   padding: 8px;
   display: flex;
   justify-content: space-between;
-  border: #d7dad8 1px solid;
 }
 
 .category-item:hover {
   background-color: rgba(1, 183, 255, 0.2);
-}
-
-.question-text {
-  /* color: black; */
 }
 
 .choice {
@@ -199,23 +114,6 @@ ul {
 li {
   padding-bottom: 3vh;
 }
-/* 
-button {
-  background-color: #0ae6e631;
-  border: #434b47 2px solid;
-  outline: none;
-  color: #434b47;
-  font-size: calc(10px + 2vmin);
-  padding: 12px;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: background-color 300ms;
-} */
-
-/* button:hover {
-  background-color: #0ae6e673;
-  transition: background-color 300ms;
-} */
 
 .menu-button {
   position: absolute;

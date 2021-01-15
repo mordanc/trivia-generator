@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import he from "he";
 import Choice from "./Choice";
 import Switch from "react-switch";
@@ -12,9 +12,53 @@ import {
   Button,
   Heading,
   Divider,
+  Container,
+  Spinner,
+  Flex,
+  Box,
+  Center,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  Badge,
+  NumberDecrementStepper,
+  VStack,
+  Tag,
+  TagLeftIcon,
+  TagLabel,
 } from "@chakra-ui/react";
+import { PhoneIcon, AddIcon, WarningIcon } from "@chakra-ui/icons";
 
-import Bets from "./components/Bets/Bets";
+const Bets = () => {
+  const [betText, setBetText] = useState("");
+  return (
+    <HStack>
+      {/* steppers have a weird overlap without this padding value */}
+      <NumberInput h="2.5rem">
+        <NumberInputField />
+        <NumberInputStepper>
+          <NumberIncrementStepper />
+          <NumberDecrementStepper />
+        </NumberInputStepper>
+      </NumberInput>
+      <Button>Place Bets</Button>
+    </HStack>
+  );
+};
+
+const getDifficultyColor = (difficulty) => {
+  switch (difficulty) {
+    case "easy":
+      return "green";
+    case "medium":
+      return "orange";
+    case "hard":
+      return "red";
+    default:
+      return "green";
+  }
+};
 
 class Trivia extends React.Component {
   constructor(props) {
@@ -225,15 +269,11 @@ class Trivia extends React.Component {
 
   render() {
     if (this.state.loading) {
-      return (
-        <div>
-          <img src={require("./images/Wedges-3s-200px.svg")} alt="Loading" />
-        </div>
-      );
+      return <Spinner />;
     }
 
     return (
-      <div className="trivia-holder">
+      <Container maxW="4xl">
         <img
           onClick={() =>
             this.setState({ settings_open: !this.state.settings_open })
@@ -245,19 +285,28 @@ class Trivia extends React.Component {
         {!this.state.settings_open ? (
           <div>
             <div className="trivia-text">
-              <div className={"difficulty-text " + this.state.difficulty}>
-                {this.state.difficulty}
-              </div>
-              <div className="row">
-                <div className="type-text">
-                  {this.state.type === "boolean"
-                    ? "True or False"
-                    : "Multiple Choice"}
-                </div>
-              </div>
-              <div className="category-text">{this.state.category}</div>
-
               <Heading className="question-text">{this.state.question}</Heading>
+              <Flex alignItems="center" my={3}>
+                <Tag mr={2} size="lg" variant="subtle">
+                  <TagLabel>
+                    {this.state.type === "boolean"
+                      ? "True or False"
+                      : "Multiple Choice"}
+                  </TagLabel>
+                </Tag>
+                <Tag
+                  variant="subtle"
+                  size="lg"
+                  mr={2}
+                  colorScheme={getDifficultyColor(this.state.difficulty)}
+                >
+                  <TagLabel>{this.state.difficulty}</TagLabel>
+                </Tag>
+                <Tag size="lg" variant="subtle" colorScheme="cyan">
+                  <TagLeftIcon boxSize="12px" as={AddIcon} />
+                  <TagLabel>{this.state.category}</TagLabel>
+                </Tag>
+              </Flex>
               <Divider className="divider" />
               <ul className="choices">
                 {this.state.choices.map((choice, key) => {
@@ -277,40 +326,42 @@ class Trivia extends React.Component {
               </ul>
             </div>
 
-            <div className="button-holder">
-              {!this.state.reveal ? (
-                this.state.show_choices ? (
-                  <span></span>
+            <Flex justify="space-between">
+              <HStack>
+                {!this.state.reveal ? (
+                  this.state.show_choices ? (
+                    <span></span>
+                  ) : (
+                    <Button
+                      onClick={() =>
+                        this.setState({
+                          reveal: true,
+                          next_disabled: false,
+                          show_choices: true,
+                        })
+                      }
+                    >
+                      Show Answer
+                    </Button>
+                  )
                 ) : (
                   <Button
                     onClick={() =>
-                      this.setState({
-                        reveal: true,
-                        next_disabled: false,
-                        show_choices: true,
-                      })
+                      this.setState({ reveal: false, selected_choice: "" })
                     }
                   >
-                    Show Answer
+                    Hide Answer
                   </Button>
-                )
-              ) : (
+                )}
                 <Button
-                  onClick={() =>
-                    this.setState({ reveal: false, selected_choice: "" })
-                  }
+                  hidden={this.state.next_disabled}
+                  onClick={() => this.fetchQuestion()}
                 >
-                  Hide Answer
+                  New Question
                 </Button>
-              )}
-              <Button
-                hidden={this.state.next_disabled}
-                onClick={() => this.fetchQuestion()}
-              >
-                New Question
-              </Button>
-            </div>
-            <Bets />
+              </HStack>
+              <Bets />
+            </Flex>
           </div>
         ) : (
           <div style={{ padding: "2vh" }}>
@@ -348,7 +399,7 @@ class Trivia extends React.Component {
             })}
           </div>
         )}
-      </div>
+      </Container>
     );
   }
 }
