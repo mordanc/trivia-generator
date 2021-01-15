@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import he from "he";
 import Choice from "./Choice";
 import Switch from "react-switch";
+import { ToastContainer, toast } from "react-toastify";
 import {
   HStack,
   Stack,
@@ -30,19 +31,27 @@ import {
 } from "@chakra-ui/react";
 import { PhoneIcon, AddIcon, WarningIcon } from "@chakra-ui/icons";
 
-const Bets = () => {
-  const [betText, setBetText] = useState("");
+import "react-toastify/dist/ReactToastify.css";
+
+const Bets = ({ updateBetAmount }) => {
+  const [betAmount, setBetAmount] = useState(0);
   return (
     <HStack>
       {/* steppers have a weird overlap without this padding value */}
-      <NumberInput h="2.5rem">
+      <NumberInput
+        value={betAmount}
+        onChange={(value) => setBetAmount(value)}
+        h="2.5rem"
+      >
         <NumberInputField />
         <NumberInputStepper>
           <NumberIncrementStepper />
           <NumberDecrementStepper />
         </NumberInputStepper>
       </NumberInput>
-      <Button>Place Bets</Button>
+      <Button onClick={() => updateBetAmount(Number(betAmount))}>
+        Place Bets
+      </Button>
     </HStack>
   );
 };
@@ -79,8 +88,18 @@ class Trivia extends React.Component {
       categories: [],
       selected_categories: [],
       session_token: "",
+      betAmount: 0,
     };
   }
+
+  notify = () => {
+    if (!this.state.betAmount) return;
+
+    const toastMessage = `${
+      this.state.selected_choice === this.state.answer ? "Audience" : "Hotseat"
+    } drink for ${this.state.betAmount}`;
+    toast.dark(toastMessage);
+  };
 
   toggleChoices(checked) {
     //change of switch for choices
@@ -114,6 +133,7 @@ class Trivia extends React.Component {
   }
 
   setSelected(selected_choice) {
+    this.notify();
     if (
       this.state.selected_choice === "" &&
       !this.state.reveal &&
@@ -127,6 +147,10 @@ class Trivia extends React.Component {
       });
     }
   }
+
+  updateBetAmount = (betAmount) => {
+    this.setState({ betAmount });
+  };
 
   componentDidMount() {
     this.fetchToken(); //This fetches token, then calls fetchCategories, then fetchQuestion
@@ -188,7 +212,7 @@ class Trivia extends React.Component {
   }
 
   fetchQuestion() {
-    this.setState({ loading: true, settings_open: false });
+    this.setState({ loading: true, settings_open: false, betAmount: 0 });
     var url = "https://opentdb.com/api.php?amount=1";
 
     if (this.state.session_token !== "") {
@@ -273,7 +297,7 @@ class Trivia extends React.Component {
     }
 
     return (
-      <Container maxW="4xl">
+      <Container className="trivia-holder" maxW="4xl">
         <img
           onClick={() =>
             this.setState({ settings_open: !this.state.settings_open })
@@ -360,7 +384,10 @@ class Trivia extends React.Component {
                   New Question
                 </Button>
               </HStack>
-              <Bets />
+              <Bets
+                betAmount={this.state.betAmount}
+                updateBetAmount={this.updateBetAmount}
+              />
             </Flex>
           </div>
         ) : (
@@ -399,6 +426,7 @@ class Trivia extends React.Component {
             })}
           </div>
         )}
+        <ToastContainer />
       </Container>
     );
   }

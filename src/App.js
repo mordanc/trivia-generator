@@ -17,6 +17,7 @@ function App() {
       <div className="Content">
         <ChakraProvider theme={customTheme}>
           <Trivia />
+          <div className='wave'></div>
         </ChakraProvider>
       </div>
     </div>
