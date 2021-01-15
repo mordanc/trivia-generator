@@ -1,12 +1,23 @@
-import React from 'react';
-import Trivia from './Trivia';
-import './App.css';
+import React from "react";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+
+import Trivia from "./Trivia";
+import "./App.css";
+
+const config = {
+  useSystemColorMode: false,
+  initialColorMode: "dark",
+};
+
+const customTheme = extendTheme({ config });
 
 function App() {
   return (
     <div className="App">
       <div className="Content">
-        <Trivia/>
+        <ChakraProvider theme={customTheme}>
+          <Trivia />
+        </ChakraProvider>
       </div>
     </div>
   );

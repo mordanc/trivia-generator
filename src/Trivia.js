@@ -3,6 +3,8 @@ import he from "he";
 import Choice from "./Choice";
 import Switch from "react-switch";
 
+import Bets from "./components/Bets/Bets";
+
 class Trivia extends React.Component {
   constructor(props) {
     super(props);
@@ -296,7 +298,7 @@ class Trivia extends React.Component {
                 New Question
               </button>
             </div>
-            <div>Hello</div>
+            <Bets />
           </div>
         ) : (
           <div style={{ padding: "2vh" }}>

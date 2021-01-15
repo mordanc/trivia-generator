@@ -203,9 +203,8 @@ ul {
 li {
   padding-bottom: 3vh;
 }
-
+/* 
 button {
-  /* background-color: #434b47; */
   background-color: #0ae6e631;
   border: #434b47 2px solid;
   outline: none;
@@ -215,7 +214,7 @@ button {
   border-radius: 15px;
   cursor: pointer;
   transition: background-color 300ms;
-}
+} */
 
 button:hover {
   background-color: #0ae6e673;
