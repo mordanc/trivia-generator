@@ -3,11 +3,9 @@
 }
 
 .Content {
-  background: #59c173; /* fallback for old browsers */
-  background: #23074d; /* fallback for old browsers */
-  /* background-color: hsl(106, 91%, 42%); */
+  background-color: #242525;
 
-  background-image: repeating-linear-gradient(
+  /* background-image: repeating-linear-gradient(
       transparent,
       transparent 50px,
       rgba(0, 0, 0, 0.4) 50px,
@@ -73,7 +71,7 @@
       #4c7788 71%,
       #6c4f63 86%,
       #432c39 100%
-    );
+    ); */
 
   min-height: 100vh;
   display: flex;
@@ -214,10 +212,10 @@ button {
   transition: background-color 300ms;
 } */
 
-button:hover {
+/* button:hover {
   background-color: #0ae6e673;
   transition: background-color 300ms;
-}
+} */
 
 .menu-button {
   position: absolute;

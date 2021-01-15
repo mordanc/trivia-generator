@@ -1,5 +1,7 @@
 import React from "react";
 
+import "./Choice.css";
+
 class Choice extends React.Component {
   constructor(props) {
     super(props);
@@ -13,7 +15,7 @@ class Choice extends React.Component {
     return (
       <div
         className={
-          "choice " +
+          "hoverable choice " +
           (this.props.reveal
             ? this.props.correct
               ? this.props.selected

@@ -1,0 +1,10 @@
+.hoverable {
+  padding-left: 1rem;
+  border: 1px solid black;
+  background: rgba(255, 255, 255, 0.08);
+  transition: all 0.3s;
+}
+
+.hoverable:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
