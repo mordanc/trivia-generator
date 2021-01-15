@@ -85,26 +85,24 @@
 }
 
 .trivia-holder {
-  background-color: rgba(0, 0, 0, 0.9);
+  /* background-color: rgba(0, 0, 0, 0.9);
   background-color: #fff;
   background-image: linear-gradient(
       90deg,
-      /* transparent 79px,
-      #abced4 79px,
-      #abced4 81px,
-      transparent 81px */
       transparent 7%,
       #abced4 7%,
       #abced4 calc(7% + 2px),
       transparent calc(7% + 2px)
     ),
     linear-gradient(#eee 0.1em, transparent 0.1em);
-  background-size: 100% 1.2em;
+  background-size: 100% 1.2em; */
+
+  background-color: #242525;
 
   padding-left: 8.5%;
   padding-right: 3vw;
-  padding-top: .8em;
-  padding-bottom: .8em;
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
 
   border-radius: 5px;
 
@@ -135,7 +133,7 @@
   color: #76807b;
   font-size: calc(10px + 1.1vmin);
   font-style: italic;
-  padding-bottom: .5em;
+  padding-bottom: 0.5em;
 }
 
 .difficulty-text {
@@ -167,7 +165,7 @@
 }
 
 .question-text {
-  color: black;
+  /* color: black; */
 }
 
 .choice {
@@ -227,4 +225,7 @@ button:hover {
   right: 0;
   padding: 10px;
   cursor: pointer;
+}
+.divider {
+  margin: 1rem 0;
 }

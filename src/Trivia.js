@@ -2,6 +2,17 @@ import React from "react";
 import he from "he";
 import Choice from "./Choice";
 import Switch from "react-switch";
+import {
+  HStack,
+  Stack,
+  FormControl,
+  FormLabel,
+  Input,
+  FormHelperText,
+  Button,
+  Heading,
+  Divider,
+} from "@chakra-ui/react";
 
 import Bets from "./components/Bets/Bets";
 
@@ -246,7 +257,8 @@ class Trivia extends React.Component {
               </div>
               <div className="category-text">{this.state.category}</div>
 
-              <div className="question-text">{this.state.question}</div>
+              <Heading className="question-text">{this.state.question}</Heading>
+              <Divider className="divider" />
               <ul className="choices">
                 {this.state.choices.map((choice, key) => {
                   return (
@@ -270,7 +282,7 @@ class Trivia extends React.Component {
                 this.state.show_choices ? (
                   <span></span>
                 ) : (
-                  <button
+                  <Button
                     onClick={() =>
                       this.setState({
                         reveal: true,
@@ -280,23 +292,23 @@ class Trivia extends React.Component {
                     }
                   >
                     Show Answer
-                  </button>
+                  </Button>
                 )
               ) : (
-                <button
+                <Button
                   onClick={() =>
                     this.setState({ reveal: false, selected_choice: "" })
                   }
                 >
                   Hide Answer
-                </button>
+                </Button>
               )}
-              <button
+              <Button
                 hidden={this.state.next_disabled}
                 onClick={() => this.fetchQuestion()}
               >
                 New Question
-              </button>
+              </Button>
             </div>
             <Bets />
           </div>
@@ -314,9 +326,9 @@ class Trivia extends React.Component {
               />
             </div>
             <h3>Categories</h3>
-            <button onClick={() => this.selectAllCategories()}>
+            <Button onClick={() => this.selectAllCategories()}>
               Toggle All
-            </button>
+            </Button>
             {this.state.categories.map((category, index) => {
               return (
                 <div
